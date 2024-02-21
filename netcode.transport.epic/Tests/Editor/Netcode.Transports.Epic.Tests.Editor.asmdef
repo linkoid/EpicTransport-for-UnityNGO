@@ -1,0 +1,27 @@
+{
+    "name": "Netcode.Transports.Epic.Tests.Editor",
+    "rootNamespace": "Netcode.Transports.Epic.Tests.Editor",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "Unity.Netcode.Runtime",
+        "Epic.OnlineServices",
+        "Netcode.Transports.Epic",
+        "Netcode.Transports.Epic.Tests"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

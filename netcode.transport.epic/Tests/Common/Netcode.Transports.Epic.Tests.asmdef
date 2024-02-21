@@ -1,0 +1,19 @@
+{
+    "name": "Netcode.Transports.Epic.Tests",
+    "rootNamespace": "Netcode.Transports.Epic.Tests",
+    "references": [
+        "Epic.OnlineServices",
+        "Netcode.Transports.Epic"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

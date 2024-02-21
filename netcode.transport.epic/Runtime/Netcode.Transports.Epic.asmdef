@@ -1,0 +1,17 @@
+{
+    "name": "Netcode.Transports.Epic",
+    "rootNamespace": "Netcode.Transports.Epic",
+    "references": [
+        "Unity.Netcode.Runtime",
+        "Epic.OnlineServices"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": true,
+    "overrideReferences": true,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
