@@ -293,7 +293,15 @@ namespace Netcode.Transports.Epic
 			component = GetComponentInParent<T>(includeInactive);
 			if (component != null) return true;
 
-			component = FindFirstObjectByType(typeof(T), includeInactive ? FindObjectsInactive.Include : FindObjectsInactive.Exclude) as T;
+			foreach (var comp in Resources.FindObjectsOfTypeAll<Component>())
+			{
+				if (comp is T t)
+				{
+					component = t;
+					break;
+				}
+			}
+
 			if (component != null) return true;
 			return false;
 		}
