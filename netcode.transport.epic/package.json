@@ -1,0 +1,21 @@
+{
+   "name": "com.linkoid.netcode.transport.epic",
+   "displayName": "EpicTransport for Unity NGO",
+   "author": "linkoid",
+   "description": "A trasport layer for Unity Netcode for Game Objects implemented using Epic Online Services' P2P Sockets",
+   "version": "0.1.0",
+   "unity": "2021.3",
+   "dependencies": {
+      "com.unity.netcode.gameobjects": "1.7.1"
+   },
+   "license": "MIT",
+   "licensesUrl": "https://github.com/linkoid/EpicTransport-for-UnityNGO/tree/main?tab=MIT-1-ov-file#readme",
+   "documentationUrl": "https://github.com/linkoid/EpicTransport-for-UnityNGO/tree/main?tab=readme-ov-file",
+   "changelogUrl": "https://github.com/linkoid/EpicTransport-for-UnityNGO/releases",
+   "keywords": [
+      "epic",
+      "unity",
+      "multiplayer"
+   ]
+}
+
