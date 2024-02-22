@@ -38,12 +38,12 @@ The EOS SDK will need to be downloaded and set up manually.
 	* If you intend to support multiple platforms later, you can read about configuring plugin platforms here: [Import and configure plug-ins](https://docs.unity3d.com/Manual/PluginInspector.html).
 1. Continue following the steps for creating the `EOSSDKComponent` and Initializing the SDK on the [EOS C# Example Documentation](https://dev.epicgames.com/docs/epic-online-services/eos-get-started/working-with-the-eos-sdk/eossdkc-sharp-getting-started#integration).
 	* The EOS documentation might show a different folder structure, but keep the folder structure specified in this README.
-	* A simple but complete implementation of the `EOSSDKComponent` can be copied from the [EpicTransportExample project](TODO).
+	* A simple but complete implementation of the `EOSSDKComponent` can be copied from the [Epic Transport Example Project](TODO).
 
 ### Setting up Epic Transport
 The EpicTransport component works with the NetworkManager component.
 The EOS SDK needs to be intialized and a user must be logged in before attempting to use EpicTransport.
-You can find an example of this process in the [EpicTransportExample project](TODO).
+You can find an example of this process in the [Epic Transport Example Project](TODO).
 
 1. Setup a NetworkManager to use EpicTransport.
 	* Create a new game object and add a NetworkManager component to it.
@@ -51,24 +51,8 @@ You can find an example of this process in the [EpicTransportExample project](TO
 	Select `EpicTransport` from that dropdown.
 1. Set the `PlatforInterface` and `LocalUserId` of the EpicTransport component after the user has logged in.
 	* There are multiple different ways of doing this, but it is recomended to use the `IPlatformInterfaceProvider` and `ILocalUserIdProvider`
-	* A good place to implement these interfaces is on the `EOSSDKComponent`. An example of this can be seen in the [EpicTransportExample project](TODO).
+	* A good place to implement these interfaces is on the `EOSSDKComponent`. An example of this can be seen in the [Epic Transport Example Project](TODO).
 1. Set the `HostUserId` of EpicTransport if you are connecting to a host.
 	* This will most likey have to be done using a string, in which case use `EpicTransport.SetHost()`.
 1. Finally, start the NetworkManager as normal.
-
-
-
-
-
-## rawr
-
-Use Epic's FREE Online Services as a transport layer for Unity's Netcode for Game Objects. 
-
-## FAQs
-
-
-
-
-
-
 
