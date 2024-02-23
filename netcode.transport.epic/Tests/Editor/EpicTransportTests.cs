@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.TestTools;
+using System.Text;
 
 public class EpicTransportTests
 {
@@ -179,6 +180,33 @@ public class EpicTransportTests
 		Assert.True(serverTransport.StartServer());
 		Assert.True(clientTransport.StartClient());
 
-		yield return new WaitForConnection(eossdk, serverTransport);
+		yield return new WaitForTransportConnection(eossdk, serverTransport);
+	}
+
+
+	// Check that StartClient returns false with bad connection data.
+	[UnityTest]
+	public IEnumerator EpicTransport_SendRecievePacket()
+	{
+		GameObject serverGameObject = new GameObject("EpicTransport_Server");
+		EpicTransport serverTransport = serverGameObject.AddComponent<EpicTransport>();
+		serverTransport.Initialize();
+
+		GameObject clientGameObject = new GameObject("EpicTransport_Client");
+		EpicTransport clientTransport = clientGameObject.AddComponent<EpicTransport>();
+		clientTransport.Initialize();
+		clientTransport.HostUserId = eossdk.LocalUserId;
+
+		Assert.True(serverTransport.StartServer());
+		Assert.True(clientTransport.StartClient());
+
+		yield return new WaitForTransportConnection(eossdk, serverTransport);
+
+		var payload = Encoding.ASCII.GetBytes("Hello World!");
+		clientTransport.Send(0, payload, Unity.Netcode.NetworkDelivery.ReliableSequenced);
+
+		var waitForTransportData = new WaitForTransportData(eossdk, serverTransport);
+		yield return waitForTransportData;
+		Assert.AreEqual(waitForTransportData.Data, payload);
 	}
 }

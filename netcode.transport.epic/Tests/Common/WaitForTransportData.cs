@@ -4,13 +4,11 @@ using Unity.Netcode;
 
 namespace Netcode.Transports.Epic.Tests
 {
-	internal class WaitForConnection : EpicTransportYieldInstruction
+	internal class WaitForTransportData : EpicTransportYieldInstruction
 	{
-		private bool isConnected = false;
+		public ArraySegment<byte> Data { get; private set; } = null;
 
-		public ulong ConnectedId { get; private set; }
-
-		public WaitForConnection(EOSSDKComponent eossdk, EpicTransport epicTransport, float timeout = 30)
+		public WaitForTransportData(EOSSDKComponent eossdk, EpicTransport epicTransport, float timeout = 30)
 			: base(eossdk, epicTransport, timeout)
 		{ }
 
@@ -19,15 +17,14 @@ namespace Netcode.Transports.Epic.Tests
 			if (!epicTransport.IsRunning)
 				throw new Exception("EpicTransport client connect failed");
 
-			return isConnected;
+			return Data != null;
 		}
 
 		protected override void OnPollEvent(NetworkEvent networkEvent, ulong clientId, ArraySegment<byte> payload, float recieveTime)
 		{
-			if (networkEvent == NetworkEvent.Connect)
+			if (networkEvent == NetworkEvent.Data)
 			{
-				ConnectedId = clientId;
-				isConnected = true;
+				Data = payload;
 			}
 		}
 	}
