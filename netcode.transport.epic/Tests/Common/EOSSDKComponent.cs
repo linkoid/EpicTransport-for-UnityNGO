@@ -1,5 +1,4 @@
 ﻿// This code is provided for unit test functionality and is not intended to represent ideal practices.
-// This code is provided for unit test functionality and is not intended to represent ideal practices.
 #if UNITY_EDITOR
 	#define EOS_EDITOR
 #endif
@@ -55,10 +54,13 @@ namespace Netcode.Transports.Epic.Tests
 	[ExecuteAlways]
 	internal class EOSSDKComponent : MonoBehaviour, IPlatformInterfaceProvider, ILocalUserIdProvider
 	{
+		private static bool s_IsInitialized = false;
+
 		public PlatformInterface PlatformInterface { get; private set; }
 		private const float c_PlatformTickInterval = 0.1f;
 		private float m_PlatformTickTimer = 0f;
 
+		public bool IsInitialized { get; private set; } = false;
 		public bool IsAuthenticated { get; private set; } = false;
 		public bool IsUserConnected { get; private set; } = false;
 		public bool LoginFailed { get; private set; } = false;
@@ -107,23 +109,34 @@ namespace Netcode.Transports.Epic.Tests
 
 		private void OnDestroy()
 		{
-			Shutdown();
+			if (IsInitialized)
+			{
+				Shutdown();
+			}
 		}
 
 		private void OnApplicationQuit()
 		{
-			Shutdown();
+			if (IsInitialized)
+			{
+				Shutdown();
+			}
 		}
 
 		private static void LoadSDK()
 		{
+#if EOS_DYNAMIC_BINDINGS || EOS_EDITOR
+#if UNITY_EDITOR
 			var libraryPath = System.IO.Path.GetFullPath($"{Application.dataPath}/Plugins/EOSSDK/Bin/{Config.LibraryName}");
+#else
+			var libraryPath = System.IO.Path.GetFullPath($"{Application.dataPath}/Plugins/x86_64/{Config.LibraryName}");
+#endif
+
 			m_LibraryPointer = LoadLibrary(libraryPath);
 			if (m_LibraryPointer == IntPtr.Zero)
 			{
 				throw new Exception("Failed to load library: " + libraryPath);
 			}
-
 			Bindings.Hook(m_LibraryPointer, GetProcAddress);
 
 #if EOS_PLATFORM_WINDOWS_64 || EOS_PLATFORM_WINDOWS_32
@@ -133,11 +146,12 @@ namespace Netcode.Transports.Epic.Tests
 #elif EOS_PLATFORM_IOS
 			IOSBindings.Hook(s_LibraryPointer, GetProcAddress);
 #endif
+#endif
 		}
 
 		private void Initialize()
 		{
-			if (PlatformInterface != null)
+			if (IsInitialized || PlatformInterface != null || s_IsInitialized)
 			{
 				// Already initialized
 				return;
@@ -163,7 +177,7 @@ namespace Netcode.Transports.Epic.Tests
 
 			PlatformFlags platformFlags = PlatformFlags.DisableOverlay | PlatformFlags.DisableSocialOverlay;
 #if UNITY_EDITOR
-			//platformFlags |= PlatformFlags.LoadingInEditor;
+			platformFlags |= PlatformFlags.LoadingInEditor;
 #endif
 
 			var options = new Options()
@@ -198,6 +212,9 @@ namespace Netcode.Transports.Epic.Tests
 			{
 				throw new Exception("Failed to create platform");
 			}
+
+			s_IsInitialized = true;
+			IsInitialized = true;
 		}
 
 		internal void Login(SecretAuthInfo authInfo)
@@ -225,12 +242,16 @@ namespace Netcode.Transports.Epic.Tests
 			}
 			else
 			{
-				Debug.LogWarning("Not shutting down platform interface because it is null");
+				Debug.LogWarning("Not shutting down EOS SDK because library pointer is null");
 			}
+
+			s_IsInitialized = false;
+			IsInitialized = false;
 		}
 
 		private static void UnloadSDK()
 		{
+#if EOS_DYNAMIC_BINDINGS || EOS_EDITOR
 			Bindings.Unhook();
 #if EOS_PLATFORM_WINDOWS_64 || EOS_PLATFORM_WINDOWS_32
 			WindowsBindings.Unhook();
@@ -238,6 +259,7 @@ namespace Netcode.Transports.Epic.Tests
 			AndroidBindings.Unhook();
 #elif EOS_PLATFORM_IOS
 			IOSBindings.Unhook();
+#endif
 #endif
 			int i = 0;
 			int lastHandleCount = 0;

@@ -128,12 +128,7 @@ namespace Netcode.Transports.Epic
 		private List<ulong> connectionInterruptedNotificationIds = new();
 		private List<ulong> connectionClosedNotificationIds = new();
 
-
-		private byte _factoryServerOutboundChannel = 1;
-		private byte _factoryClientOutboundChannel = 2;
-
-		private byte InboundChannel => networkManager.IsHost || networkManager.IsServer ? _factoryClientOutboundChannel : _factoryServerOutboundChannel;
-		private byte OutboundChannel => networkManager.IsClient ? _factoryClientOutboundChannel : _factoryServerOutboundChannel;
+		private byte OutboundChannel => 0;
 
 		public string SocketCategory { get => _socketCategory; set => SetIfNotRunning(ref _socketCategory, value, nameof(SocketCategory)); }
 		[SerializeField] private string _socketCategory = "default";
@@ -581,7 +576,7 @@ namespace Netcode.Transports.Epic
 		{
 			packet = default;
 
-			if (!p2p.TryRecievePacket(InboundChannel, tempRecievePacketBytes, out recievedPacketInfo, out var bytesWritten))
+			if (!p2p.TryRecievePacket(tempRecievePacketBytes, out recievedPacketInfo, out var bytesWritten))
 			{
 				//Debug.LogError("Got error in TryRecievePacket, but not in TryGetNextRecievedPacketSize?");
 				return false;

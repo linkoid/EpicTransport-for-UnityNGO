@@ -2,6 +2,7 @@
     "name": "Netcode.Transports.Epic.Tests",
     "rootNamespace": "Netcode.Transports.Epic.Tests",
     "references": [
+        "Unity.Netcode.Runtime",
         "Epic.OnlineServices",
         "Netcode.Transports.Epic"
     ],

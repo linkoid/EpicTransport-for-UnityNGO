@@ -71,21 +71,21 @@ namespace Netcode.Transports.Epic
 		}
 
 
-		public bool TryRecievePacket(byte requestedChannel, ArraySegment<byte> outData, out RecievedPacketInfo recievedPacketInfo, out uint bytesWritten)
+		public bool TryRecievePacket(ArraySegment<byte> outData, out RecievedPacketInfo recievedPacketInfo, out uint bytesWritten, byte? requestedChannel = null)
 		{
-			var result = RecievePacketInternal(requestedChannel, outData, out recievedPacketInfo, out bytesWritten);
+			var result = RecievePacketInternal(outData, out recievedPacketInfo, out bytesWritten, requestedChannel);
 			if (result == Result.NotFound) return false; // There are no more packets
 			return CheckResult(result, nameof(TryRecievePacket));
 		}
 
-		private Result RecievePacketInternal(byte requestedChannel, ArraySegment<byte> outData, out RecievedPacketInfo recievedPacketInfo, out uint bytesWritten)
+		private Result RecievePacketInternal(ArraySegment<byte> outData, out RecievedPacketInfo recievedPacketInfo, out uint bytesWritten, byte? requestedChannel)
 		{
 			recievedPacketInfo = default;
 
 			var receivePacketOptions = new ReceivePacketOptions()
 			{
 				LocalUserId = localUserId,
-				RequestedChannel = default,
+				RequestedChannel = requestedChannel,
 				MaxDataSizeBytes = (uint)outData.Count,
 			};
 

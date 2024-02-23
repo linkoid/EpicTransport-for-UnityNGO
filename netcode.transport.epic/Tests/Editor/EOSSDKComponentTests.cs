@@ -5,7 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-public class EOSSDKTests
+public class EOSSDKComponentTests
 {
 	private EOSSDKComponent eossdk;
 
@@ -26,9 +26,18 @@ public class EOSSDKTests
 	}
 
 	[UnityTest]
-    public IEnumerator EOSLoginTest()
+    public IEnumerator EOSSDKComponent_Login()
 	{
 		eossdk.Login(Secrets.AuthInfo[0]);
 		yield return new WaitForUserConnected(eossdk);
+	}
+
+	[UnityTest]
+	public IEnumerator EOSSDKComponent_InitializeOnce()
+	{
+		var gameObject = new GameObject("EOSSDK2");
+		var eossdk2 = gameObject.AddComponent<EOSSDKComponent>();
+
+		yield return null;
 	}
 }
